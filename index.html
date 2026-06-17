@@ -584,7 +584,7 @@ async function trackOrder(orderId) {
   setLoading(true);
 
   try {
-    const res = await fetch(WEBHOOK_URL'https://hook.eu1.make.com/6n27jy18jvcyu0vqbbqhys2aj2aznzqa', {
+    const res = await fetch('https://hook.eu1.make.com/6n27jy18jvcyu0vqbbqhys2aj2aznzqa', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ order_id: orderId })
