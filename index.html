@@ -67,6 +67,8 @@
       transition: all 0.2s; text-align: left; font-family: inherit;
     }
     .quick-btn:hover { background: #202028; border-color: var(--gold-dim); color: var(--gold-light); }
+    /* Active/selected state for order tracking button */
+    .quick-btn.active { background: #1e1a10; border-color: var(--gold); color: var(--gold-light); }
 
     .sidebar-info { margin-top: auto; }
     .info-card {
@@ -139,6 +141,42 @@
     .msg.bot  .msg-bubble { background: var(--bg-msg-bot); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--text-main); }
     .msg.user .msg-bubble { background: linear-gradient(135deg, var(--gold), var(--accent)); border-bottom-right-radius: 4px; color: #0a0a0c; font-weight: 500; }
 
+    /* Order tracking result card inside bubble */
+    .order-card {
+      background: #0f0f18;
+      border: 1px solid var(--gold-dim);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .order-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .order-card-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #1e1e28; }
+    .order-card-row:last-child { border-bottom: none; }
+    .order-card-label { color: var(--text-muted); font-size: 12px; }
+    .order-card-value { color: var(--text-main); font-weight: 500; font-size: 13px; }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-processing  { background: #2a1f00; color: #f0a500; border: 1px solid #5a3f00; }
+    .status-shipped     { background: #001a2a; color: #4db8ff; border: 1px solid #003a5a; }
+    .status-delivered   { background: #002a12; color: #4caf50; border: 1px solid #005a25; }
+    .status-cancelled   { background: #2a0000; color: #ff6b6b; border: 1px solid #5a0000; }
+    .status-default     { background: #1a1a28; color: var(--text-sub); border: 1px solid var(--border); }
+
     .msg-time { font-size: 10px; color: var(--text-muted); padding: 0 4px; }
 
     /* Typing indicator */
@@ -157,6 +195,30 @@
       border-top: 1px solid var(--border);
       background: rgba(10,10,12,0.9);
     }
+
+    /* Order ID input hint banner */
+    #order-mode-banner {
+      display: none;
+      background: #1a1505;
+      border: 1px solid var(--gold-dim);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    #order-mode-banner.visible { display: flex; }
+    #order-cancel-btn {
+      background: none; border: 1px solid var(--gold-dim); border-radius: 6px;
+      color: var(--text-muted); font-size: 11px; padding: 2px 8px; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; white-space: nowrap;
+    }
+    #order-cancel-btn:hover { border-color: #ff8080; color: #ff8080; }
+
     .input-row { display: flex; gap: 10px; align-items: flex-end; }
     #user-input {
       flex: 1; background: var(--bg-input); border: 1px solid var(--border);
@@ -168,6 +230,8 @@
     }
     #user-input::placeholder { color: var(--text-muted); }
     #user-input:focus { border-color: var(--gold-dim); }
+    /* Highlight input border in order mode */
+    #user-input.order-mode { border-color: var(--gold-dim); background: #14120a; }
 
     #send-btn {
       width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px;
@@ -269,7 +333,8 @@
     <div class="quick-btns">
       <button class="quick-btn" onclick="askQuick('আপনাদের কাছে কী কী পোশাক পাওয়া যায়?')">👗 পোশাকের কালেকশন দেখুন</button>
       <button class="quick-btn" onclick="askQuick('দাম কেমন? বাজেট ফ্রেন্ডলি অপশন আছে?')">💰 দাম ও বাজেট</button>
-      <button class="quick-btn" onclick="askQuick('অর্ডার কীভাবে করব? ডেলিভারি কতদিনে?')">📦 অর্ডার ও ডেলিভারি</button>
+      <!-- ORDER TRACKING BUTTON — triggers order mode -->
+      <button class="quick-btn" id="order-track-btn" onclick="startOrderTracking()">📦 অর্ডার ট্র্যাক করুন</button>
       <button class="quick-btn" onclick="askQuick('কাস্টম ড্রেস বানানো যাবে?')">✂️ কাস্টম ড্রেস</button>
       <button class="quick-btn" onclick="askQuick('রিটার্ন বা এক্সচেঞ্জ পলিসি কী?')">🔄 রিটার্ন পলিসি</button>
       <button class="quick-btn" onclick="askQuick('বিকাশ বা নগদে পেমেন্ট করা যাবে?')">💳 পেমেন্ট পদ্ধতি</button>
@@ -305,6 +370,11 @@
     </div>
 
     <div id="input-area">
+      <!-- Order mode banner -->
+      <div id="order-mode-banner">
+        <span>📦 অর্ডার আইডি মোড চালু — নিচে আপনার অর্ডার আইডি লিখুন</span>
+        <button id="order-cancel-btn" onclick="cancelOrderMode()">বাতিল করুন ✕</button>
+      </div>
       <div class="input-row">
         <textarea id="user-input" placeholder="আপনার প্রশ্ন লিখুন..." rows="1"></textarea>
         <button id="send-btn" onclick="sendMessage()">➤</button>
@@ -316,9 +386,11 @@
 
 <script>
 // ──────────────────────────────────────────────
-//  CONFIG
+//  CONFIG — আপনার Webhook URL এখানে বসান
 // ──────────────────────────────────────────────
-const GROQ_MODEL  = 'llama3-70b-8192';
+const WEBHOOK_URL   = 'এখানে আপনার Make.com Webhook URL বসান';
+
+const GROQ_MODEL    = 'llama3-70b-8192';
 const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 
 const SYSTEM_PROMPT = `তুমি "Style HOD BD"-এর অফিশিয়াল AI ফ্যাশন সহকারী। তোমার নাম "Style Assistant"। তুমি শুধুমাত্র Style HOD BD-এর পণ্য, সার্ভিস এবং ব্যবসা সংক্রান্ত প্রশ্নের উত্তর দেবে। অন্য কোনো বিষয়ে প্রশ্ন করলে বিনয়ের সাথে বলবে যে তুমি শুধু Style HOD BD-এর বিষয়ে সাহায্য করতে পারো।
@@ -442,9 +514,10 @@ Plus size-ও উপলব্ধ, অর্ডারে জানান।
 // ──────────────────────────────────────────────
 //  STATE
 // ──────────────────────────────────────────────
-let apiKey = localStorage.getItem('groq_api_key') || '';
+let apiKey      = localStorage.getItem('groq_api_key') || '';
 let chatHistory = [];
-let isLoading = false;
+let isLoading   = false;
+let orderMode   = false;   // true = waiting for order ID input
 
 // ──────────────────────────────────────────────
 //  API KEY
@@ -461,17 +534,194 @@ function saveApiKey() {
 }
 
 // ──────────────────────────────────────────────
-//  SEND MESSAGE
+//  ORDER TRACKING MODE
+// ──────────────────────────────────────────────
+
+/** Called when "অর্ডার ট্র্যাক করুন" sidebar button is clicked */
+function startOrderTracking() {
+  // Show a bot message asking for order ID
+  appendMsg('bot', 'আপনার অর্ডার আইডিটি দিন (যেমন: 1001) এবং আমি সাথে সাথে ট্র্যাক করব! 📦');
+
+  // Enter order-ID-awaiting mode
+  orderMode = true;
+  document.getElementById('order-mode-banner').classList.add('visible');
+  const input = document.getElementById('user-input');
+  input.placeholder = 'অর্ডার আইডি লিখুন (যেমন: 1001)...';
+  input.classList.add('order-mode');
+  input.focus();
+
+  // Highlight the sidebar button
+  document.getElementById('order-track-btn').classList.add('active');
+}
+
+/** Cancel order ID mode and return to normal chat */
+function cancelOrderMode() {
+  orderMode = false;
+  document.getElementById('order-mode-banner').classList.remove('visible');
+  const input = document.getElementById('user-input');
+  input.placeholder = 'আপনার প্রশ্ন লিখুন...';
+  input.classList.remove('order-mode');
+  document.getElementById('order-track-btn').classList.remove('active');
+}
+
+/**
+ * POST order_id to Make.com webhook and show response in chat.
+ * Expects webhook to return JSON, e.g.:
+ * {
+ *   "order_id": "1001",
+ *   "status": "shipped",
+ *   "product": "কাতান শাড়ি",
+ *   "courier": "Sundarban",
+ *   "tracking_number": "SB123456",
+ *   "estimated_delivery": "১৮ জুন ২০২৬",
+ *   "message": "আপনার অর্ডার পাঠানো হয়েছে!"
+ * }
+ * কিন্তু যদি Make.com plain text বা অন্য format পাঠায়,
+ * সেটাও fallback হিসেবে চ্যাটে দেখানো হবে।
+ */
+async function trackOrder(orderId) {
+  const typingId = showTyping();
+  setLoading(true);
+
+  try {
+    const res = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order_id: orderId })
+    });
+
+    if (!res.ok) {
+      removeTyping(typingId);
+      appendMsg('bot', `⚠️ সার্ভার থেকে সাড়া পাওয়া যায়নি (${res.status})। অনুগ্রহ করে আবার চেষ্টা করুন অথবা Facebook-এ যোগাযোগ করুন।`);
+      return;
+    }
+
+    // Try to parse as JSON; fall back to raw text
+    const contentType = res.headers.get('content-type') || '';
+    let data = null;
+    let rawText = '';
+
+    if (contentType.includes('application/json')) {
+      data = await res.json();
+    } else {
+      rawText = await res.text();
+      // Attempt JSON parse even if content-type is wrong
+      try { data = JSON.parse(rawText); } catch (_) { /* keep rawText */ }
+    }
+
+    removeTyping(typingId);
+
+    if (data && typeof data === 'object') {
+      // Render a structured order card
+      appendOrderCard(data);
+    } else {
+      // Render whatever text came back
+      const displayText = rawText || 'অর্ডার সংক্রান্ত কোনো তথ্য পাওয়া যায়নি।';
+      appendMsg('bot', `📦 অর্ডার #${escHtml(orderId)} এর তথ্য:\n\n${displayText}`);
+    }
+
+  } catch (e) {
+    removeTyping(typingId);
+    appendMsg('bot', '⚠️ নেটওয়ার্ক সমস্যার কারণে অর্ডার ট্র্যাক করা যায়নি। ইন্টারনেট সংযোগ চেক করুন।');
+  } finally {
+    setLoading(false);
+  }
+}
+
+/** Pick a CSS class for the status badge */
+function statusClass(status) {
+  if (!status) return 'status-default';
+  const s = status.toLowerCase();
+  if (s.includes('processing') || s.includes('প্রক্রিয়া') || s.includes('pending') || s.includes('অপেক্ষা')) return 'status-processing';
+  if (s.includes('ship') || s.includes('পাঠান') || s.includes('transit') || s.includes('courier')) return 'status-shipped';
+  if (s.includes('deliver') || s.includes('পৌঁছ') || s.includes('complete') || s.includes('সম্পন্ন')) return 'status-delivered';
+  if (s.includes('cancel') || s.includes('বাতিল')) return 'status-cancelled';
+  return 'status-default';
+}
+
+/** Render a structured order info card as a bot message */
+function appendOrderCard(data) {
+  const msgs = document.getElementById('messages');
+  const welcome = msgs.querySelector('.welcome-block');
+  if (welcome) welcome.remove();
+
+  const now = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+
+  // Build table rows from known fields
+  const fields = [
+    { label: 'অর্ডার আইডি',        key: 'order_id' },
+    { label: 'পণ্য',                key: 'product' },
+    { label: 'কুরিয়ার',            key: 'courier' },
+    { label: 'ট্র্যাকিং নম্বর',    key: 'tracking_number' },
+    { label: 'আনুমানিক ডেলিভারি',  key: 'estimated_delivery' },
+  ];
+
+  let rowsHtml = '';
+  fields.forEach(f => {
+    if (data[f.key]) {
+      rowsHtml += `<div class="order-card-row">
+        <span class="order-card-label">${f.label}</span>
+        <span class="order-card-value">${escHtml(String(data[f.key]))}</span>
+      </div>`;
+    }
+  });
+
+  // Status badge
+  const statusText  = data.status || data.order_status || '';
+  const badgeClass  = statusClass(statusText);
+  const statusBadge = statusText
+    ? `<span class="status-badge ${badgeClass}">${escHtml(statusText)}</span>`
+    : '';
+
+  // Optional message from webhook
+  const msgLine = data.message
+    ? `<div style="margin-top:10px;font-size:13px;color:var(--text-sub)">💬 ${escHtml(data.message)}</div>`
+    : '';
+
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-avatar">👗</div>
+    <div class="msg-body">
+      <div class="msg-bubble">
+        আপনার অর্ডারের বর্তমান অবস্থা:
+        <div class="order-card">
+          <div class="order-card-title">📦 অর্ডার ট্র্যাকিং ${statusBadge}</div>
+          ${rowsHtml}
+          ${msgLine}
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">
+          আরো প্রশ্ন থাকলে জানান, আমি সাহায্য করতে প্রস্তুত! 😊
+        </div>
+      </div>
+      <div class="msg-time">${now}</div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ──────────────────────────────────────────────
+//  SEND MESSAGE (normal chat + order mode)
 // ──────────────────────────────────────────────
 async function sendMessage() {
   const input = document.getElementById('user-input');
   const text  = input.value.trim();
   if (!text || isLoading) return;
 
+  // Show user bubble
   appendMsg('user', text);
-  chatHistory.push({ role: 'user', content: text });
   input.value = '';
   input.style.height = 'auto';
+
+  // ── ORDER MODE: send to webhook ──
+  if (orderMode) {
+    cancelOrderMode();           // Reset UI back to normal
+    await trackOrder(text);      // text = order ID entered by user
+    return;
+  }
+
+  // ── NORMAL MODE: send to Groq ──
+  chatHistory.push({ role: 'user', content: text });
 
   const typingId = showTyping();
   setLoading(true);
@@ -505,7 +755,7 @@ async function sendMessage() {
       return;
     }
 
-    const data = await res.json();
+    const data  = await res.json();
     const reply = data.choices?.[0]?.message?.content || 'দুঃখিত, উত্তর পাওয়া যায়নি।';
     chatHistory.push({ role: 'assistant', content: reply });
     removeTyping(typingId);
@@ -548,9 +798,9 @@ function appendMsg(role, text) {
 
 let typingCounter = 0;
 function showTyping() {
-  const id = 'typing-' + (++typingCounter);
+  const id   = 'typing-' + (++typingCounter);
   const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
+  const div  = document.createElement('div');
   div.id = id; div.className = 'msg bot';
   div.innerHTML = `
     <div class="msg-avatar">👗</div>
@@ -576,7 +826,7 @@ function showError(msg) {
 }
 
 function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // ──────────────────────────────────────────────
