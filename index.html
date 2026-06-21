@@ -27,10 +27,8 @@
 
     html, body { height: 100%; font-family: 'Inter', 'Hind Siliguri', sans-serif; background: var(--bg-deep); color: var(--text-main); overflow: hidden; }
 
-    /* ── Layout ── */
     #app { display: flex; height: 100vh; }
 
-    /* ── Sidebar ── */
     #sidebar {
       width: 280px; flex-shrink: 0;
       background: var(--bg-card);
@@ -46,18 +44,10 @@
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 24px; box-shadow: 0 0 20px rgba(201,168,76,0.3);
     }
-    .brand-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px; font-weight: 700;
-      color: var(--gold-light); letter-spacing: 0.04em;
-    }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--gold-light); letter-spacing: 0.04em; }
     .brand-tagline { font-size: 11px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .sidebar-section-title {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text-muted);
-      margin-bottom: 12px;
-    }
+    .sidebar-section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
 
     .quick-btns { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
     .quick-btn {
@@ -67,110 +57,63 @@
       transition: all 0.2s; text-align: left; font-family: inherit;
     }
     .quick-btn:hover { background: #202028; border-color: var(--gold-dim); color: var(--gold-light); }
-    /* Active/selected state for order tracking button */
     .quick-btn.active { background: #1e1a10; border-color: var(--gold); color: var(--gold-light); }
 
     .sidebar-info { margin-top: auto; }
-    .info-card {
-      background: var(--bg-input); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px;
-    }
+    .info-card { background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
     .info-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--text-sub); }
     .info-row:last-child { margin-bottom: 0; }
     .info-icon { font-size: 14px; }
     .info-link { color: var(--gold); text-decoration: none; }
     .info-link:hover { text-decoration: underline; }
 
-    /* ── Main Chat ── */
     #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-    /* Header */
     #header {
       padding: 16px 24px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
       background: rgba(10,10,12,0.9); backdrop-filter: blur(10px);
     }
-    .header-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold), var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
+    .header-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .header-info { flex: 1; }
     .header-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--gold-light); }
     .header-status { font-size: 11px; color: #4caf50; display: flex; align-items: center; gap: 5px; }
     .status-dot { width: 6px; height: 6px; background: #4caf50; border-radius: 50%; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 
-    /* Messages */
-    #messages {
-      flex: 1; overflow-y: auto; padding: 24px;
-      display: flex; flex-direction: column; gap: 16px;
-      scroll-behavior: smooth;
-    }
+    #messages { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
     #messages::-webkit-scrollbar { width: 4px; }
     #messages::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
 
-    /* Welcome */
     .welcome-block { text-align: center; padding: 32px 16px; }
     .welcome-icon { font-size: 48px; margin-bottom: 16px; }
     .welcome-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; }
     .welcome-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 340px; margin: 0 auto; }
 
-    /* Message bubbles */
     .msg { display: flex; gap: 10px; max-width: 78%; animation: fadeUp 0.3s ease; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
     .msg.user { align-self: flex-end; flex-direction: row-reverse; }
     .msg.bot  { align-self: flex-start; }
 
-    .msg-avatar {
-      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 16px;
-    }
+    .msg-avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
     .msg.bot  .msg-avatar { background: linear-gradient(135deg, var(--gold), var(--accent)); }
     .msg.user .msg-avatar { background: #2a2a34; }
 
     .msg-body { display: flex; flex-direction: column; gap: 4px; }
     .msg.user .msg-body { align-items: flex-end; }
 
-    .msg-bubble {
-      padding: 12px 16px; border-radius: 18px;
-      font-size: 14px; line-height: 1.65;
-    }
+    .msg-bubble { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.65; }
     .msg.bot  .msg-bubble { background: var(--bg-msg-bot); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--text-main); }
     .msg.user .msg-bubble { background: linear-gradient(135deg, var(--gold), var(--accent)); border-bottom-right-radius: 4px; color: #0a0a0c; font-weight: 500; }
 
-    /* Order tracking result card inside bubble */
-    .order-card {
-      background: #0f0f18;
-      border: 1px solid var(--gold-dim);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-    .order-card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px;
-      color: var(--gold-light);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .order-card { background: #0f0f18; border: 1px solid var(--gold-dim); border-radius: 12px; padding: 14px 16px; margin-top: 8px; font-size: 13px; line-height: 1.8; }
+    .order-card-title { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--gold-light); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
     .order-card-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #1e1e28; }
     .order-card-row:last-child { border-bottom: none; }
     .order-card-label { color: var(--text-muted); font-size: 12px; }
     .order-card-value { color: var(--text-main); font-weight: 500; font-size: 13px; }
-    .status-badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
+    .status-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .status-processing  { background: #2a1f00; color: #f0a500; border: 1px solid #5a3f00; }
     .status-shipped     { background: #001a2a; color: #4db8ff; border: 1px solid #003a5a; }
     .status-delivered   { background: #002a12; color: #4caf50; border: 1px solid #005a25; }
@@ -179,80 +122,38 @@
 
     .msg-time { font-size: 10px; color: var(--text-muted); padding: 0 4px; }
 
-    /* Typing indicator */
     .typing { display: flex; align-items: center; gap: 5px; padding: 14px 16px; }
-    .typing span {
-      width: 7px; height: 7px; background: var(--gold); border-radius: 50%;
-      animation: bounce 1.2s infinite;
-    }
+    .typing span { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; animation: bounce 1.2s infinite; }
     .typing span:nth-child(2) { animation-delay: 0.2s; }
     .typing span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce { 0%,60%,100%{transform:translateY(0);} 30%{transform:translateY(-8px);} }
 
-    /* Input area */
-    #input-area {
-      padding: 16px 24px 20px;
-      border-top: 1px solid var(--border);
-      background: rgba(10,10,12,0.9);
-    }
+    #input-area { padding: 16px 24px 20px; border-top: 1px solid var(--border); background: rgba(10,10,12,0.9); }
 
-    /* Order ID input hint banner */
     #order-mode-banner {
-      display: none;
-      background: #1a1505;
-      border: 1px solid var(--gold-dim);
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 12px;
-      color: var(--gold-light);
-      margin-bottom: 10px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      background: #1a1505; border: 1px solid var(--gold-dim); border-radius: 10px;
+      padding: 8px 14px; font-size: 12px; color: var(--gold-light);
+      margin-bottom: 10px; display: none; align-items: center;
+      justify-content: space-between; gap: 8px;
     }
     #order-mode-banner.visible { display: flex; }
-    #order-cancel-btn {
-      background: none; border: 1px solid var(--gold-dim); border-radius: 6px;
-      color: var(--text-muted); font-size: 11px; padding: 2px 8px; cursor: pointer;
-      font-family: inherit; transition: all 0.2s; white-space: nowrap;
-    }
+    #order-cancel-btn { background: none; border: 1px solid var(--gold-dim); border-radius: 6px; color: var(--text-muted); font-size: 11px; padding: 2px 8px; cursor: pointer; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
     #order-cancel-btn:hover { border-color: #ff8080; color: #ff8080; }
 
     .input-row { display: flex; gap: 10px; align-items: flex-end; }
-    #user-input {
-      flex: 1; background: var(--bg-input); border: 1px solid var(--border);
-      border-radius: 14px; padding: 12px 16px;
-      color: var(--text-main); font-size: 14px; font-family: inherit;
-      resize: none; outline: none; max-height: 120px; min-height: 44px;
-      transition: border-color 0.2s;
-      line-height: 1.5;
-    }
+    #user-input { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; color: var(--text-main); font-size: 14px; font-family: inherit; resize: none; outline: none; max-height: 120px; min-height: 44px; transition: border-color 0.2s; line-height: 1.5; }
     #user-input::placeholder { color: var(--text-muted); }
     #user-input:focus { border-color: var(--gold-dim); }
-    /* Highlight input border in order mode */
     #user-input.order-mode { border-color: var(--gold-dim); background: #14120a; }
 
-    #send-btn {
-      width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px;
-      background: linear-gradient(135deg, var(--gold), var(--accent));
-      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 18px; transition: all 0.2s; color: #0a0a0c;
-    }
+    #send-btn { width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, var(--gold), var(--accent)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.2s; color: #0a0a0c; }
     #send-btn:hover { transform: scale(1.05); box-shadow: 0 0 16px rgba(201,168,76,0.4); }
     #send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
     .input-hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
 
-    /* Error toast */
-    #error-toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: #3a1515; border: 1px solid #7a2020; border-radius: 10px;
-      padding: 12px 20px; font-size: 13px; color: #ff8080;
-      display: none; z-index: 200; max-width: 90%;
-    }
+    #error-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #3a1515; border: 1px solid #7a2020; border-radius: 10px; padding: 12px 20px; font-size: 13px; color: #ff8080; display: none; z-index: 200; max-width: 90%; }
 
-    /* Responsive */
     @media (max-width: 640px) {
       #sidebar { display: none; }
       #messages { padding: 16px; }
@@ -263,13 +164,9 @@
 </head>
 <body>
 
-<!-- Error Toast -->
 <div id="error-toast"></div>
 
-<!-- App -->
 <div id="app">
-
-  <!-- Sidebar -->
   <div id="sidebar">
     <div class="brand">
       <div class="brand-icon">👗</div>
@@ -281,7 +178,6 @@
     <div class="quick-btns">
       <button class="quick-btn" onclick="askQuick('আপনাদের কাছে কী কী পোশাক পাওয়া যায়?')">👗 পোশাকের কালেকশন দেখুন</button>
       <button class="quick-btn" onclick="askQuick('দাম কেমন? বাজেট ফ্রেন্ডলি অপশন আছে?')">💰 দাম ও বাজেট</button>
-      <!-- ORDER TRACKING BUTTON — triggers order mode -->
       <button class="quick-btn" id="order-track-btn" onclick="startOrderTracking()">📦 অর্ডার ট্র্যাক করুন</button>
       <button class="quick-btn" onclick="askQuick('কাস্টম ড্রেস বানানো যাবে?')">✂️ কাস্টম ড্রেস</button>
       <button class="quick-btn" onclick="askQuick('রিটার্ন বা এক্সচেঞ্জ পলিসি কী?')">🔄 রিটার্ন পলিসি</button>
@@ -299,7 +195,6 @@
     </div>
   </div>
 
-  <!-- Main -->
   <div id="main">
     <div id="header">
       <div class="header-avatar">👗</div>
@@ -318,7 +213,6 @@
     </div>
 
     <div id="input-area">
-      <!-- Order mode banner -->
       <div id="order-mode-banner">
         <span>📦 অর্ডার আইডি মোড চালু — নিচে আপনার অর্ডার আইডি লিখুন</span>
         <button id="order-cancel-btn" onclick="cancelOrderMode()">বাতিল করুন ✕</button>
@@ -333,40 +227,23 @@
 </div>
 
 <script>
-// ──────────────────────────────────────────────
-//  CONFIG — আপনার Make.com Webhook URL এখানে বসান
-// ──────────────────────────────────────────────
-const WEBHOOK_URL   = 'https://hook.eu1.make.com/6n27jy18jvcyu0vqbbqhys2aj2aznzqa';
+const WEBHOOK_URL = 'https://hook.eu1.make.com/6n27jy18jvcyu0vqbbqhys2aj2aznzqa';
 
-// ──────────────────────────────────────────────
-//  STATE
-// ──────────────────────────────────────────────
 let chatHistory = [];
 let isLoading   = false;
-let orderMode   = false;   // true = waiting for order ID input
+let orderMode   = false;
 
-// ──────────────────────────────────────────────
-//  ORDER TRACKING MODE
-// ──────────────────────────────────────────────
-
-/** Called when "অর্ডার ট্র্যাক করুন" sidebar button is clicked */
 function startOrderTracking() {
-  // Show a bot message asking for order ID
   appendMsg('bot', 'আপনার অর্ডার আইডিটি দিন (যেমন: 1001) এবং আমি সাথে সাথে ট্র্যাক করব! 📦');
-
-  // Enter order-ID-awaiting mode
   orderMode = true;
   document.getElementById('order-mode-banner').classList.add('visible');
   const input = document.getElementById('user-input');
   input.placeholder = 'অর্ডার আইডি লিখুন (যেমন: 1001)...';
   input.classList.add('order-mode');
   input.focus();
-
-  // Highlight the sidebar button
   document.getElementById('order-track-btn').classList.add('active');
 }
 
-/** Cancel order ID mode and return to normal chat */
 function cancelOrderMode() {
   orderMode = false;
   document.getElementById('order-mode-banner').classList.remove('visible');
@@ -376,21 +253,6 @@ function cancelOrderMode() {
   document.getElementById('order-track-btn').classList.remove('active');
 }
 
-/**
- * POST order_id to Make.com webhook and show response in chat.
- * Expects webhook to return JSON, e.g.:
- * {
- *   "order_id": "1001",
- *   "status": "shipped",
- *   "product": "কাতান শাড়ি",
- *   "courier": "Sundarban",
- *   "tracking_number": "SB123456",
- *   "estimated_delivery": "১৮ জুন ২০২৬",
- *   "message": "আপনার অর্ডার পাঠানো হয়েছে!"
- * }
- * কিন্তু যদি Make.com plain text বা অন্য format পাঠায়,
- * সেটাও fallback হিসেবে চ্যাটে দেখানো হবে।
- */
 async function trackOrder(orderId) {
   const typingId = showTyping();
   setLoading(true);
@@ -404,54 +266,42 @@ async function trackOrder(orderId) {
 
     if (!res.ok) {
       removeTyping(typingId);
-      appendMsg('bot', `⚠️ সার্ভার থেকে সাড়া পাওয়া যায়নি (${res.status})। অনুগ্রহ করে আবার চেষ্টা করুন অথবা Facebook-এ যোগাযোগ করুন।`);
+      appendMsg('bot', '\u26a0\ufe0f সার্ভার থেকে সাড়া পাওয়া যায়নি (' + res.status + ')। অনুগ্রহ করে আবার চেষ্টা করুন।');
       return;
     }
 
-    // Try to parse as JSON; fall back to raw text
-    const contentType = res.headers.get('content-type') || '';
     let data = null;
-    let rawText = '';
-
-    if (contentType.includes('application/json')) {
-      data = await res.json();
-    } else {
-      rawText = await res.text();
-      // Attempt JSON parse even if content-type is wrong
-      try { data = JSON.parse(rawText); } catch (_) { /* keep rawText */ }
-    }
+    try {
+      const text = await res.text();
+      data = JSON.parse(text);
+    } catch(_) {}
 
     removeTyping(typingId);
 
     if (data && typeof data === 'object') {
-      // Render a structured order card
       appendOrderCard(data);
     } else {
-      // Render whatever text came back
-      const displayText = rawText || 'অর্ডার সংক্রান্ত কোনো তথ্য পাওয়া যায়নি।';
-      appendMsg('bot', `📦 অর্ডার #${escHtml(orderId)} এর তথ্য:\n\n${displayText}`);
+      appendMsg('bot', '\u26a0\ufe0f অর্ডার তথ্য পাওয়া যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।');
     }
 
   } catch (e) {
     removeTyping(typingId);
-    appendMsg('bot', '⚠️ নেটওয়ার্ক সমস্যার কারণে অর্ডার ট্র্যাক করা যায়নি। ইন্টারনেট সংযোগ চেক করুন।');
+    appendMsg('bot', '\u26a0\ufe0f নেটওয়ার্ক সমস্যার কারণে অর্ডার ট্র্যাক করা যায়নি।');
   } finally {
     setLoading(false);
   }
 }
 
-/** Pick a CSS class for the status badge */
 function statusClass(status) {
   if (!status) return 'status-default';
   const s = status.toLowerCase();
-  if (s.includes('processing') || s.includes('প্রক্রিয়া') || s.includes('pending') || s.includes('অপেক্ষা')) return 'status-processing';
-  if (s.includes('ship') || s.includes('পাঠান') || s.includes('transit') || s.includes('courier')) return 'status-shipped';
-  if (s.includes('deliver') || s.includes('পৌঁছ') || s.includes('complete') || s.includes('সম্পন্ন')) return 'status-delivered';
-  if (s.includes('cancel') || s.includes('বাতিল')) return 'status-cancelled';
+  if (s.includes('processing') || s.includes('pending')) return 'status-processing';
+  if (s.includes('ship') || s.includes('transit') || s.includes('courier')) return 'status-shipped';
+  if (s.includes('deliver') || s.includes('complete')) return 'status-delivered';
+  if (s.includes('cancel')) return 'status-cancelled';
   return 'status-default';
 }
 
-/** Render a structured order info card as a bot message */
 function appendOrderCard(data) {
   const msgs = document.getElementById('messages');
   const welcome = msgs.querySelector('.welcome-block');
@@ -459,82 +309,50 @@ function appendOrderCard(data) {
 
   const now = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
 
-  // Build table rows from known fields
   const fields = [
-    { label: 'অর্ডার আইডি',        key: 'order_id' },
-    { label: 'পণ্য',                key: 'product' },
-    { label: 'কুরিয়ার',            key: 'courier' },
-    { label: 'ট্র্যাকিং নম্বর',    key: 'tracking_number' },
-    { label: 'আনুমানিক ডেলিভারি',  key: 'estimated_delivery' },
+    { label: 'অর্ডার আইডি',       key: 'order_id' },
+    { label: 'পণ্য',               key: 'product' },
+    { label: 'কাস্টমার',           key: 'customer' },
+    { label: 'কুরিয়ার',           key: 'courier' },
+    { label: 'ট্র্যাকিং লিংক',    key: 'tracking_number' },
+    { label: 'আনুমানিক ডেলিভারি', key: 'estimated_delivery' },
   ];
 
   let rowsHtml = '';
   fields.forEach(f => {
     if (data[f.key]) {
-      rowsHtml += `<div class="order-card-row">
-        <span class="order-card-label">${f.label}</span>
-        <span class="order-card-value">${escHtml(String(data[f.key]))}</span>
-      </div>`;
+      rowsHtml += '<div class="order-card-row"><span class="order-card-label">' + f.label + '</span><span class="order-card-value">' + escHtml(String(data[f.key])) + '</span></div>';
     }
   });
 
-  // Status badge
-  const statusText  = data.status || data.order_status || '';
-  const badgeClass  = statusClass(statusText);
-  const statusBadge = statusText
-    ? `<span class="status-badge ${badgeClass}">${escHtml(statusText)}</span>`
-    : '';
-
-  // Optional message from webhook
-  const msgLine = data.message
-    ? `<div style="margin-top:10px;font-size:13px;color:var(--text-sub)">💬 ${escHtml(data.message)}</div>`
-    : '';
+  const statusText = data.status || '';
+  const badgeClass = statusClass(statusText);
+  const statusBadge = statusText ? '<span class="status-badge ' + badgeClass + '">' + escHtml(statusText) + '</span>' : '';
+  const msgLine = data.message ? '<div style="margin-top:10px;font-size:13px;color:var(--text-sub)">💬 ' + escHtml(data.message) + '</div>' : '';
 
   const div = document.createElement('div');
   div.className = 'msg bot';
-  div.innerHTML = `
-    <div class="msg-avatar">👗</div>
-    <div class="msg-body">
-      <div class="msg-bubble">
-        আপনার অর্ডারের বর্তমান অবস্থা:
-        <div class="order-card">
-          <div class="order-card-title">📦 অর্ডার ট্র্যাকিং ${statusBadge}</div>
-          ${rowsHtml}
-          ${msgLine}
-        </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">
-          আরো প্রশ্ন থাকলে জানান, আমি সাহায্য করতে প্রস্তুত! 😊
-        </div>
-      </div>
-      <div class="msg-time">${now}</div>
-    </div>`;
+  div.innerHTML = '<div class="msg-avatar">👗</div><div class="msg-body"><div class="msg-bubble">আপনার অর্ডারের বর্তমান অবস্থা:<div class="order-card"><div class="order-card-title">📦 অর্ডার ট্র্যাকিং ' + statusBadge + '</div>' + rowsHtml + msgLine + '</div><div style="margin-top:10px;font-size:12px;color:var(--text-muted)">আরো প্রশ্ন থাকলে জানান! 😊</div></div><div class="msg-time">' + now + '</div></div>';
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-// ──────────────────────────────────────────────
-//  SEND MESSAGE (normal chat + order mode)
-// ──────────────────────────────────────────────
 async function sendMessage() {
   const input = document.getElementById('user-input');
   const text  = input.value.trim();
   if (!text || isLoading) return;
 
-  // Show user bubble
   appendMsg('user', text);
   input.value = '';
   input.style.height = 'auto';
 
-  // ── ORDER MODE: send to webhook ──
   if (orderMode) {
-    cancelOrderMode();           // Reset UI back to normal
-    await trackOrder(text);      // text = order ID entered by user
+    cancelOrderMode();
+    await trackOrder(text);
     return;
   }
 
-  // ── NORMAL MODE: পাঠান আমাদের নিজের /api/chat এ (Groq key এখন সার্ভারে সেফ) ──
   chatHistory.push({ role: 'user', content: text });
-
   const typingId = showTyping();
   setLoading(true);
 
@@ -548,7 +366,7 @@ async function sendMessage() {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      showError('সার্ভার এরর: ' + (data?.error || res.statusText));
+      showError('সার্ভার এরর: ' + (data && data.error ? data.error : res.statusText));
       return;
     }
 
@@ -569,9 +387,6 @@ function askQuick(q) {
   sendMessage();
 }
 
-// ──────────────────────────────────────────────
-//  DOM HELPERS
-// ──────────────────────────────────────────────
 function appendMsg(role, text) {
   const msgs = document.getElementById('messages');
   const welcome = msgs.querySelector('.welcome-block');
@@ -579,35 +394,25 @@ function appendMsg(role, text) {
 
   const now = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
-  div.className = `msg ${role}`;
-
+  div.className = 'msg ' + role;
   const avatar = role === 'bot' ? '👗' : '👤';
-  div.innerHTML = `
-    <div class="msg-avatar">${avatar}</div>
-    <div class="msg-body">
-      <div class="msg-bubble">${escHtml(text).replace(/\n/g,'<br>')}</div>
-      <div class="msg-time">${now}</div>
-    </div>`;
+  div.innerHTML = '<div class="msg-avatar">' + avatar + '</div><div class="msg-body"><div class="msg-bubble">' + escHtml(text).replace(/\n/g,'<br>') + '</div><div class="msg-time">' + now + '</div></div>';
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
 let typingCounter = 0;
 function showTyping() {
-  const id   = 'typing-' + (++typingCounter);
+  const id = 'typing-' + (++typingCounter);
   const msgs = document.getElementById('messages');
-  const div  = document.createElement('div');
+  const div = document.createElement('div');
   div.id = id; div.className = 'msg bot';
-  div.innerHTML = `
-    <div class="msg-avatar">👗</div>
-    <div class="msg-body">
-      <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>
-    </div>`;
+  div.innerHTML = '<div class="msg-avatar">👗</div><div class="msg-body"><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>';
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   return id;
 }
-function removeTyping(id) { document.getElementById(id)?.remove(); }
+function removeTyping(id) { const el = document.getElementById(id); if (el) el.remove(); }
 
 function setLoading(v) {
   isLoading = v;
@@ -618,28 +423,20 @@ function showError(msg) {
   const t = document.getElementById('error-toast');
   t.textContent = '⚠️ ' + msg;
   t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 4000);
+  setTimeout(function() { t.style.display = 'none'; }, 4000);
 }
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ──────────────────────────────────────────────
-//  KEYBOARD
-// ──────────────────────────────────────────────
-document.getElementById('user-input').addEventListener('keydown', e => {
+document.getElementById('user-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 document.getElementById('user-input').addEventListener('input', function() {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 });
-
-// ──────────────────────────────────────────────
-//  INIT
-// ──────────────────────────────────────────────
-// (এখন আর কোনো API key modal লাগবে না — সরাসরি চ্যাট শুরু করা যায়)
 </script>
 </body>
 </html>
