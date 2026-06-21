@@ -244,39 +244,6 @@
 
     .input-hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
 
-    /* API key modal */
-    #api-modal {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .modal-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 20px; padding: 36px; max-width: 420px; width: 100%;
-      box-shadow: var(--shadow);
-    }
-    .modal-icon { font-size: 40px; margin-bottom: 16px; }
-    .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; }
-    .modal-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
-    .modal-label { font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
-    .modal-input {
-      width: 100%; background: var(--bg-input); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 14px; color: var(--text-main);
-      font-size: 14px; font-family: inherit; outline: none; margin-bottom: 16px;
-      transition: border-color 0.2s;
-    }
-    .modal-input:focus { border-color: var(--gold-dim); }
-    .modal-btn {
-      width: 100%; padding: 13px;
-      background: linear-gradient(135deg, var(--gold), var(--accent));
-      border: none; border-radius: 10px; color: #0a0a0c;
-      font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
-      transition: opacity 0.2s;
-    }
-    .modal-btn:hover { opacity: 0.9; }
-    .modal-note { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 12px; }
-    .modal-note a { color: var(--gold); text-decoration: none; }
-
     /* Error toast */
     #error-toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -295,25 +262,6 @@
   </style>
 </head>
 <body>
-
-<!-- API Key Modal -->
-<div id="api-modal">
-  <div class="modal-card">
-    <div class="modal-icon">🔑</div>
-    <div class="modal-title">Groq API Key দিন</div>
-    <div class="modal-sub">
-      Style HOD BD চ্যাটবট চালু করতে আপনার Groq API Key প্রয়োজন।
-      বিনামূল্যে পেতে <a href="https://console.groq.com" target="_blank" style="color:var(--gold)">console.groq.com</a> ভিজিট করুন।
-    </div>
-    <div class="modal-label">আপনার Groq API Key</div>
-    <input class="modal-input" id="api-key-input" type="password" placeholder="gsk_xxxxxxxxxxxxxxxxxx" />
-    <button class="modal-btn" onclick="saveApiKey()">✨ চ্যাটবট চালু করুন</button>
-    <div class="modal-note">
-      আপনার API Key শুধু এই ব্রাউজারে সংরক্ষিত হবে।<br>
-      Groq সম্পূর্ণ বিনামূল্যে ব্যবহার করা যায়।
-    </div>
-  </div>
-</div>
 
 <!-- Error Toast -->
 <div id="error-toast"></div>
@@ -386,152 +334,16 @@
 
 <script>
 // ──────────────────────────────────────────────
-//  CONFIG — আপনার Webhook URL এখানে বসান
+//  CONFIG — আপনার Make.com Webhook URL এখানে বসান
 // ──────────────────────────────────────────────
 const WEBHOOK_URL   = 'এখানে আপনার Make.com Webhook URL বসান';
-
-const GROQ_MODEL    = 'llama3-70b-8192';
-const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-
-const SYSTEM_PROMPT = `তুমি "Style HOD BD"-এর অফিশিয়াল AI ফ্যাশন সহকারী। তোমার নাম "Style Assistant"। তুমি শুধুমাত্র Style HOD BD-এর পণ্য, সার্ভিস এবং ব্যবসা সংক্রান্ত প্রশ্নের উত্তর দেবে। অন্য কোনো বিষয়ে প্রশ্ন করলে বিনয়ের সাথে বলবে যে তুমি শুধু Style HOD BD-এর বিষয়ে সাহায্য করতে পারো।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-🏪 ব্যবসার তথ্য
-━━━━━━━━━━━━━━━━━━━━━━━
-নাম: Style HOD BD
-ধরন: অনলাইন ফ্যাশন বুটিক (বাংলাদেশ)
-অবস্থান: ঢাকা, বাংলাদেশ
-Facebook Page: facebook.com/stylehodbd
-ফোন/WhatsApp: 01XXXXXXXXX (আপনার নম্বর বসান)
-ইনস্টাগ্রাম: @stylehodbd
-কার্যঘণ্টা: শনিবার–বৃহস্পতিবার, সকাল ৯টা – রাত ৯টা (শুক্রবার বন্ধ)
-
-━━━━━━━━━━━━━━━━━━━━━━━
-👗 পণ্য ও কালেকশন
-━━━━━━━━━━━━━━━━━━━━━━━
-আমরা নারীদের ফ্যাশন পোশাক এবং এক্সেসরিজ বিক্রি করি। আমাদের কালেকশনে রয়েছে:
-
-1. পার্টি ওয়্যার ড্রেস – ৳৮০০ থেকে ৳৩,৫০০
-2. ক্যাজুয়াল কুর্তি/থ্রি-পিস – ৳৪৫০ থেকে ৳১,২০০
-3. শাড়ি (কাতান, মসলিন, জামদানি, জর্জেট) – ৳৯০০ থেকে ৳৮,০০০
-4. সালোয়ার-কামিজ – ৳৫৫০ থেকে ৳২,০০০
-5. ওয়েস্টার্ন ড্রেস (গাউন, ম্যাক্সি, ক্রপ টপ) – ৳৬০০ থেকে ৳২,৮০০
-6. কো-অর্ড সেট – ৳৮০০ থেকে ৳২,২০০
-7. হিজাব ও স্কার্ফ – ৳১৫০ থেকে ৳৬৫০
-8. ব্যাগ ও এক্সেসরিজ – ৳৩০০ থেকে ৳১,৮০০
-9. কাস্টম ব্রাইডাল/বিয়ের পোশাক – অর্ডার অনুযায়ী (৳৩,০০০ থেকে)
-
-নতুন কালেকশন প্রতি সপ্তাহে আসে। ঈদ ও উৎসব স্পেশাল কালেকশন আলাদা।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-🛍️ অর্ডার প্রক্রিয়া
-━━━━━━━━━━━━━━━━━━━━━━━
-অর্ডার করার ধাপ:
-1. Facebook Page বা WhatsApp-এ পছন্দের পোশাকের ছবি দেখান
-2. সাইজ ও রঙ নিশ্চিত করুন
-3. এ্যাডভান্স পেমেন্ট করুন (মূল্যের ৫০% বা সম্পূর্ণ)
-4. ডেলিভারি ঠিকানা পাঠান
-5. পণ্য হাতে পেয়ে বাকি টাকা দিন (Cash on Delivery ক্ষেত্রে)
-
-━━━━━━━━━━━━━━━━━━━━━━━
-📦 ডেলিভারি তথ্য
-━━━━━━━━━━━━━━━━━━━━━━━
-ঢাকার ভেতরে:
-- ডেলিভারি সময়: ১–২ কার্যদিবস
-- চার্জ: ৳৭০–৳১০০
-
-ঢাকার বাইরে (সারাদেশ):
-- ডেলিভারি সময়: ২–৫ কার্যদিবস
-- কুরিয়ার: Sundarban, Pathao, Redx, SA Paribahan
-- চার্জ: ৳১২০–৳১৮০
-
-হোম ডেলিভারি ঢাকায় উপলব্ধ।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-💳 পেমেন্ট পদ্ধতি
-━━━━━━━━━━━━━━━━━━━━━━━
-- বিকাশ ✅
-- নগদ ✅
-- রকেট ✅
-- ব্যাংক ট্রান্সফার ✅
-- Cash on Delivery (COD) ✅ – ঢাকার মধ্যে
-- ক্রেডিট/ডেবিট কার্ড (অনলাইনে) ✅
-
-━━━━━━━━━━━━━━━━━━━━━━━
-✂️ কাস্টম অর্ডার
-━━━━━━━━━━━━━━━━━━━━━━━
-হ্যাঁ, আমরা কাস্টম ড্রেস তৈরি করি:
-- বিয়ের পোশাক (লেহেঙ্গা, শেরওয়ানি, সালোয়ার)
-- পার্টি গাউন কাস্টম ডিজাইন
-- অফিস ওয়্যার কালেকশন
-সময় লাগে: ৭–১৪ কার্যদিবস
-অর্ডারের আগে মেজারমেন্ট পাঠাতে হবে।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-🔄 রিটার্ন ও এক্সচেঞ্জ পলিসি
-━━━━━━━━━━━━━━━━━━━━━━━
-- পণ্য পেলে ২৪ ঘণ্টার মধ্যে ভিডিও করে আনবক্স করুন
-- ত্রুটিপূর্ণ পণ্য হলে এক্সচেঞ্জ বা রিফান্ড করা হবে
-- সাইজ পরিবর্তনের জন্য ৩ দিনের মধ্যে জানাতে হবে
-- ব্যবহৃত বা ধোয়া পোশাক ফেরত নেওয়া হয় না
-- রিটার্ন শিপিং কাস্টমার বহন করবেন
-
-━━━━━━━━━━━━━━━━━━━━━━━
-🎁 অফার ও ডিসকাউন্ট
-━━━━━━━━━━━━━━━━━━━━━━━
-- নতুন কাস্টমার: ৫% ওয়েলকাম ডিসকাউন্ট (কোড: NEWHOD)
-- ৳২,০০০+ অর্ডারে ফ্রি ডেলিভারি (ঢাকায়)
-- রেফারেল বোনাস: বন্ধুকে রেফার করলে ৳১৫০ ক্রেডিট
-- ঈদ ও উৎসবে বিশেষ ছাড় (Facebook পেজে আপডেট)
-- Loyalty Program: প্রতি ৫টি অর্ডারে একটি ফ্রি গিফট
-
-━━━━━━━━━━━━━━━━━━━━━━━
-📏 সাইজ গাইড (মহিলাদের)
-━━━━━━━━━━━━━━━━━━━━━━━
-S  = ছাতি ৩৪", কোমর ২৮", হিপ ৩৬"
-M  = ছাতি ৩৬", কোমর ৩০", হিপ ৩৮"
-L  = ছাতি ৩৮", কোমর ৩২", হিপ ৪০"
-XL = ছাতি ৪০", কোমর ৩৪", হিপ ৪২"
-XXL= ছাতি ৪২", কোমর ৩৬", হিপ ৪৪"
-Plus size-ও উপলব্ধ, অর্ডারে জানান।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-📢 যোগাযোগ করুন
-━━━━━━━━━━━━━━━━━━━━━━━
-সরাসরি কথা বলতে: Facebook Messenger বা WhatsApp-এ মেসেজ করুন।
-
-━━━━━━━━━━━━━━━━━━━━━━━
-🗣️ উত্তর দেওয়ার নির্দেশনা
-━━━━━━━━━━━━━━━━━━━━━━━
-- সবসময় বাংলায় উত্তর দাও
-- বন্ধুসুলভ কিন্তু পেশাদার ভাষা ব্যবহার কর
-- প্রতিটি উত্তর সংক্ষিপ্ত, স্পষ্ট ও সহায়ক রাখো
-- ইমোজি ব্যবহার করো কিন্তু অতিরিক্ত নয়
-- কাস্টমারকে সর্বদা সাহায্য করার চেষ্টা কর
-- যদি কোনো প্রশ্নের উত্তর না জানো, ফেসবুক পেজে যোগাযোগ করতে বলো
-- Style HOD BD ছাড়া অন্য কোনো বিষয়ে কথা বলবে না`;
 
 // ──────────────────────────────────────────────
 //  STATE
 // ──────────────────────────────────────────────
-let apiKey      = localStorage.getItem('groq_api_key') || '';
 let chatHistory = [];
 let isLoading   = false;
 let orderMode   = false;   // true = waiting for order ID input
-
-// ──────────────────────────────────────────────
-//  API KEY
-// ──────────────────────────────────────────────
-function saveApiKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (!val.startsWith('gsk_') || val.length < 20) {
-    showError('সঠিক Groq API Key দিন (gsk_ দিয়ে শুরু হওয়া)');
-    return;
-  }
-  apiKey = val;
-  localStorage.setItem('groq_api_key', apiKey);
-  document.getElementById('api-modal').style.display = 'none';
-}
 
 // ──────────────────────────────────────────────
 //  ORDER TRACKING MODE
@@ -584,7 +396,7 @@ async function trackOrder(orderId) {
   setLoading(true);
 
   try {
-    const res = await fetch('https://hook.eu1.make.com/6n27jy18jvcyu0vqbbqhys2aj2aznzqa', {
+    const res = await fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ order_id: orderId })
@@ -720,43 +532,27 @@ async function sendMessage() {
     return;
   }
 
-  // ── NORMAL MODE: send to Groq ──
+  // ── NORMAL MODE: পাঠান আমাদের নিজের /api/chat এ (Groq key এখন সার্ভারে সেফ) ──
   chatHistory.push({ role: 'user', content: text });
 
   const typingId = showTyping();
   setLoading(true);
 
   try {
-    const res = await fetch(GROQ_ENDPOINT, {
+    const res = await fetch('/api/chat', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...chatHistory
-        ],
-        temperature: 0.7,
-        max_tokens: 800
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
     });
 
+    const data = await res.json().catch(() => ({}));
+
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      if (res.status === 401) {
-        localStorage.removeItem('groq_api_key');
-        showError('API Key ভুল! পেজ রিলোড করে নতুন Key দিন।');
-      } else {
-        showError('সার্ভার এরর: ' + (err?.error?.message || res.statusText));
-      }
+      showError('সার্ভার এরর: ' + (data?.error || res.statusText));
       return;
     }
 
-    const data  = await res.json();
-    const reply = data.choices?.[0]?.message?.content || 'দুঃখিত, উত্তর পাওয়া যায়নি।';
+    const reply = data.reply || 'দুঃখিত, উত্তর পাওয়া যায়নি।';
     chatHistory.push({ role: 'assistant', content: reply });
     removeTyping(typingId);
     appendMsg('bot', reply);
@@ -843,8 +639,7 @@ document.getElementById('user-input').addEventListener('input', function() {
 // ──────────────────────────────────────────────
 //  INIT
 // ──────────────────────────────────────────────
-if (apiKey) document.getElementById('api-modal').style.display = 'none';
-else         document.getElementById('api-key-input').focus();
+// (এখন আর কোনো API key modal লাগবে না — সরাসরি চ্যাট শুরু করা যায়)
 </script>
 </body>
 </html>
